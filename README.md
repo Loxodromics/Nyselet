@@ -1,2 +1,2 @@
 # Nyselet
-Nyselet will be a stereographic picture viewer for phones
+Nyselet is a simple stereographic picture viewer for phones
