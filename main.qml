@@ -18,7 +18,7 @@ Window {
     Image {
         id: leftEye
         fillMode: Image.PreserveAspectCrop
-        source: "qrc:/resources/leftEye.jpg"
+        source: "assets:/images/leftEye.jpg"
 
         anchors.top: parent.top
         anchors.left: parent.left
@@ -31,7 +31,7 @@ Window {
     Image {
         id: rightEye
         fillMode: Image.PreserveAspectCrop
-        source: "qrc:/resources/rightEye.jpg"
+        source: "assets:/images/rightEye.jpg"
 
         anchors.top: parent.top
         anchors.left: leftEye.right
@@ -49,8 +49,12 @@ Window {
             id: folderModel
             nameFilters: ["*.jpg", "*.jpeg"]
 
+            folder: "assets:/images/"
+
             onFolderChanged: {
+                console.log("onFolderChanged: " + folderPath + " count: " + count)
                 if (count > 1) {
+                    console.log("onFolderChanged > 1");
                     indexOffset = 0
                     showImages();
                 }
@@ -72,19 +76,28 @@ Window {
         folder: shortcuts.home
         selectFolder: true
         onAccepted: {
-            console.log("You chose: " + fileDialog.folder)
-            folderPath = fileDialog.folder
-            folderModel.folder = fileDialog.folder
-
+            console.log("You chose folder: " + fileDialog.folder)
+            console.log("You chose file: " + fileDialog.fileUrl)
+            folderPath = decodeURIComponent(fileDialog.fileUrl)
+//            folderPath = fileDialog.fileUrl;
+//            folderPath = folderPath.replace(":", "/");
+            folderPath = folderPath.replace(/:/g, "/");
+            folderPath = folderPath.replace("///", "://");
+            console.log("folder path: " + folderPath);
+            folderModel.folder = folderPath
+            showImages();
         }
         onRejected: {
             console.log("Canceled")
         }
-        Component.onCompleted: visible = true
+//        Component.onCompleted: visible = true
     }
 
     Item {
-        id: keys
+        id: inpiut
+
+        anchors.fill: parent
+
         focus: true
         Keys.onPressed: {
             if (event.key === Qt.Key_Left) {
@@ -108,12 +121,29 @@ Window {
 
             console.log("indexOffset: " + indexOffset);
         }
+
+        MouseArea {
+            id: mouseArea
+
+            anchors.fill: parent
+
+            onClicked: {
+//                fileDialog.visible = true
+                if (indexOffset < folderModel.count - 2)
+                    indexOffset++;
+                else
+                    indexOffset = 0;
+                showImages();
+            }
+        }
     }
 
     function showImages() {
+        console.log("showImages");
         leftEye.source = folderModel.get(indexOffset, "fileUrl");
         console.log("leftEye.source: " + leftEye.source);
         rightEye.source = folderModel.get(indexOffset + 1, "fileUrl");
         console.log("rightEye.source: " + rightEye.source);
+//        rightEye.source = folderPath + "/0.jpeg";
     }
 }

@@ -1,4 +1,4 @@
-QT += quick
+QT += quick androidextras
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -28,3 +28,26 @@ QML_DESIGNER_IMPORT_PATH =
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    android/AndroidManifest.xml \
+	android/build.gradle \
+	android/gradle.properties \
+	android/gradle/wrapper/gradle-wrapper.jar \
+	android/gradle/wrapper/gradle-wrapper.properties \
+	android/gradlew \
+	android/gradlew.bat \
+	android/res/values/libs.xml
+
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+
+
+android {
+    assets.files  += \
+	resources/leftEye.jpg \
+	resources/rightEye.jpg
+
+    assets.path = /assets/images/
+	INSTALLS += assets
+}
+
