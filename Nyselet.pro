@@ -44,8 +44,8 @@ ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
 android {
     assets.files  += \
-	resources/leftEye.jpg \
-	resources/rightEye.jpg
+	resources/0bleftEye.jpg \
+	resources/0arightEye.jpg \
 
     assets.path = /assets/images/
 	INSTALLS += assets

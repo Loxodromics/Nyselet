@@ -18,7 +18,6 @@ Window {
     Image {
         id: leftEye
         fillMode: Image.PreserveAspectCrop
-        source: "assets:/images/leftEye.jpg"
 
         anchors.top: parent.top
         anchors.left: parent.left
@@ -31,7 +30,6 @@ Window {
     Image {
         id: rightEye
         fillMode: Image.PreserveAspectCrop
-        source: "assets:/images/rightEye.jpg"
 
         anchors.top: parent.top
         anchors.left: leftEye.right
@@ -44,6 +42,8 @@ Window {
 
     ListView {
         width: 200; height: 400
+
+        visible: false
 
         FolderListModel {
             id: folderModel
@@ -58,6 +58,10 @@ Window {
                     indexOffset = 0
                     showImages();
                 }
+            }
+
+            Component.onCompleted: {
+                showImages();
             }
         }
 
@@ -129,8 +133,8 @@ Window {
 
             onClicked: {
 //                fileDialog.visible = true
-                if (indexOffset < folderModel.count - 2)
-                    indexOffset++;
+                if (indexOffset < folderModel.count - 3)
+                    indexOffset += 2;
                 else
                     indexOffset = 0;
                 showImages();
@@ -140,10 +144,10 @@ Window {
 
     function showImages() {
         console.log("showImages");
-        leftEye.source = folderModel.get(indexOffset, "fileUrl");
-        console.log("leftEye.source: " + leftEye.source);
-        rightEye.source = folderModel.get(indexOffset + 1, "fileUrl");
+        rightEye.source = folderModel.get(indexOffset, "fileUrl");
         console.log("rightEye.source: " + rightEye.source);
+        leftEye.source = folderModel.get(indexOffset + 1, "fileUrl");
+        console.log("leftEye.source: " + leftEye.source);
 //        rightEye.source = folderPath + "/0.jpeg";
     }
 }
